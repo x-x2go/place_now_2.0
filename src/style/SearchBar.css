@@ -1,0 +1,89 @@
+button {
+  border: none;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: 600;
+  resize: none;
+}
+
+#mainLogo img {
+  margin: 10px;
+  margin-top: 40px;
+  width: 200px;
+}
+
+.searchBar {
+  width: 350px;
+  height: 100%;
+  text-align: center;
+  float: left;
+  background-color: #efefef;
+}
+
+.searchBar button {
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+  margin: 10px;
+  border-radius: 30px;
+  justify-content: center;
+  color: #fff;
+}
+
+.category {
+  margin: 0 5px;
+  text-align: center;
+}
+
+#cafe {
+  background-color: #96c7cb;
+}
+#restaurants {
+  background-color: #89cdb8;
+}
+#bakery {
+  background-color: #95d8ad;
+}
+#market {
+  background-color: #b4eaae;
+}
+#shopping_mall {
+  background-color: #e2d4a3;
+}
+#hospital {
+  background-color: #cf88b4;
+}
+#pharmacy {
+  background-color: #c490d0;
+}
+#bank {
+  background-color: #b38edb;
+}
+
+#pac-input {
+  background-color: #fff;
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 300;
+  margin-left: 12px;
+  padding: 5px 11px 5px 13px;
+  margin: 20px;
+  text-overflow: ellipsis;
+  width: 240px;
+  border: 1px solid #dcdcdc;
+  border-radius: 30px;
+}
+
+#pac-input:focus {
+  box-shadow: 1px 1px 8px 1px #dcdcdc;
+}
+
+@media screen and (max-width: 800px) {
+  #searchBar {
+    width: 30%;
+  }
+  #pac-input {
+    width: 50%;
+    display: block;
+  }
+}
