@@ -1,6 +1,7 @@
 import React from "react";
 import Category from "./Category";
 import "../style/SearchBar.css";
+import SearchBox from "./SearchBox";
 
 class SearchBar extends React.Component{
 
@@ -13,12 +14,7 @@ class SearchBar extends React.Component{
                     alt="place-now logo"
                     />
                 </div>
-                <input
-                    id="pac-input"
-                    className="controls"
-                    type="text"
-                    placeholder="Search Box"
-                />
+                <SearchBox google={this.props.google}/>
                 <Category/>
         </div>
         )

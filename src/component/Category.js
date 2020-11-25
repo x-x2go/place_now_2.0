@@ -16,7 +16,7 @@ const Category = () => {
     return(
         <div className="category" id="category">
             {categoryList}
-        </div>
+        </div> 
     )
 }
 
