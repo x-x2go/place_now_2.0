@@ -1,5 +1,4 @@
 import React from 'react';
-//import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
 class SearchBox extends React.Component {
@@ -8,34 +7,49 @@ class SearchBox extends React.Component {
     onPlacesChanged: PropTypes.func
   }
 
+  constructor(props){
+    super(props);
+    this.clearSearchBox = this.clearSearchBox.bind(this);
+  }
+
   render() {
     return (
             <input
-                id="pac-input"
+                id="pac-input" 
                 className="controls"
                 type="text"
                 placeholder="Search Box"
+                onFocus={this.clearSearchBox}
                 ref={(ref)=> this.input = ref}
             />)
   }
 
-  onPlacesChanged = () => {
-    if (this.props.onPlacesChanged) {
-      this.props.onPlacesChanged(this.searchBox.getPlaces());
+  onPlacesChanged = ({map}= this.props) => {
+    const selected = this.searchBox.getPlaces();
+    const { 0: place } = selected;
+
+    if (!place.geometry) return;
+
+    if (place.geometry.viewport) {
+      map.fitBounds(place.geometry.viewport);
+    } else {
+      map.setCenter(place.geometry.location);
+      map.setZoom(17);
     }
   }
 
-  componentDidMount() {
-    const { google } = this.props;
-    //const input = this.input;
-    //const input = ReactDOM.findDOMNode(this.input);
-    this.searchBox = new google.maps.places.SearchBox(this.input);
-    this.searchBox.addListener('places_changed', this.onPlacesChanged);
+  clearSearchBox() {
+    this.input.value = '';
   }
 
-  componentWillUnmount() {
-    const { google } = this.props;
-    google.maps.event.clearInstanceListeners(this.searchBox);
+  componentDidMount({ map, mapApi} = this.props ) {
+    this.searchBox = new mapApi.places.SearchBox(this.input);
+    this.searchBox.addListener('places_changed', this.onPlacesChanged);
+    this.searchBox.bindTo('bounds', map);
+  }
+
+  componentWillUnmount({mapApi} = this.props) {
+    mapApi.event.clearInstanceListeners(this.input);
   }
 }
 

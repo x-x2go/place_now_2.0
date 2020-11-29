@@ -3,9 +3,10 @@ import Category from "./Category";
 import "../style/SearchBar.css";
 import SearchBox from "./SearchBox";
 
-class SearchBar extends React.Component{
 
-    render(){
+
+const SearchBar = props => {
+
         return (
             <div className="searchBar">
                 <div id="mainLogo">
@@ -14,11 +15,16 @@ class SearchBar extends React.Component{
                     alt="place-now logo"
                     />
                 </div>
-                <SearchBox google={this.props.google}/>
+                <SearchBox
+                map={props.map}
+                mapApi={props.mapApi}
+                onPlacesChanged={props.onPlacesChanged}
+                />
                 <Category/>
         </div>
         )
-    }
+    
+
 }
 
 export default SearchBar;
