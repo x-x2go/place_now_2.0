@@ -18,7 +18,8 @@ const SearchBar = props => {
                 <SearchBox
                 map={props.map}
                 mapApi={props.mapApi}
-                onPlacesChanged={props.onPlacesChanged}
+                addPlace={props.addPlace}
+                // onPlacesChanged={props.onPlacesChanged}
                 />
                 <Category/>
         </div>

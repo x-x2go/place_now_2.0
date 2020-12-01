@@ -15,7 +15,7 @@ class SearchBox extends React.Component {
   render() {
     return (
             <input
-                id="pac-input" 
+                id="pac-input"  
                 className="controls"
                 type="text"
                 placeholder="Search Box"
@@ -24,7 +24,7 @@ class SearchBox extends React.Component {
             />)
   }
 
-  onPlacesChanged = ({map}= this.props) => {
+  onPlacesChanged = ({map, addPlace}= this.props) => {
     const selected = this.searchBox.getPlaces();
     const { 0: place } = selected;
 
@@ -36,6 +36,8 @@ class SearchBox extends React.Component {
       map.setCenter(place.geometry.location);
       map.setZoom(17);
     }
+
+    addPlace(selected);
   }
 
   clearSearchBox() {
