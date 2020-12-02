@@ -24,19 +24,22 @@ class SearchBox extends React.Component {
             />)
   }
 
-  onPlacesChanged = ({map, addPlace}= this.props) => {
+  onPlacesChanged = ({map, mapApi, addPlace}= this.props) => {
     const selected = this.searchBox.getPlaces();
-    const { 0: place } = selected;
+    let bounds = new mapApi.LatLngBounds();
 
-    if (!place.geometry) return;
+    selected.forEach((place)=>{
+      if (!place.geometry) return;
 
-    if (place.geometry.viewport) {
-      map.fitBounds(place.geometry.viewport);
-    } else {
-      map.setCenter(place.geometry.location);
-      map.setZoom(17);
-    }
-
+      if (place.geometry.viewport) {
+        bounds.union(place.geometry.viewport);
+      } else {
+        bounds.extend(place.geometry.location);
+      }
+      
+    })
+   
+    map.fitBounds(bounds);
     addPlace(selected);
   }
 
@@ -48,7 +51,7 @@ class SearchBox extends React.Component {
     this.searchBox = new mapApi.places.SearchBox(this.input);
     this.searchBox.addListener('places_changed', this.onPlacesChanged);
     this.searchBox.bindTo('bounds', map);
-  }
+  } 
 
   componentWillUnmount({mapApi} = this.props) {
     mapApi.event.clearInstanceListeners(this.input);

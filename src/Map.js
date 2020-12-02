@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import GoogleMap from 'google-map-react';
 import SearchBar from './component/SearchBar';
 import dotenv from "dotenv";
 import './Map.css';
+import Marker from './component/Marker';
 
 dotenv.config();
 
@@ -12,10 +13,8 @@ const Map = props => {
     const [googlemaps, setGooglemaps] = useState(null);
     const [center, setCenter] = useState({ lat: 37.5, lng: 127 });
     const [places, setPlaces] = useState([]);
-    const [icon, setIcon] = useState(null);
 
     let zoom = 10;
-    let markers = [];
 
     if(window.screen.width >= 768){
         zoom = 15;
@@ -26,14 +25,6 @@ const Map = props => {
         setApiReady(true);
         setMap(map);
         setGooglemaps(maps);
-        setIcon( {
-            url:
-              "https://place-now.s3.ap-northeast-2.amazonaws.com/marker/icon_default.png",
-             size: new maps.Size(40, 40),
-             origin: new maps.Point(0, 0),
-             anchor: new maps.Point(20, 40),
-             scaledSize: new maps.Size(40, 40),
-          });
         }
     };
 
@@ -43,19 +34,6 @@ const Map = props => {
         }
       };
 
-      const makeMarker = (places) => {
-        places.forEach((place) => {
-            let marker = new googlemaps.Marker({
-                map: map,
-                icon: icon,
-                title: place.name,
-                position: place.geometry.location,
-                type: place.type,
-              });
-          
-              markers.push(marker);
-          })
-      }
     // const onPlacesChanged = places => {
     //     setCenter(
     //     (center.lat = places[0].geometry.location.lat()),
@@ -82,7 +60,14 @@ const Map = props => {
                 yesIWantToUseGoogleMapApiInternals
                 onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
                 >
-                    { makeMarker(places) }
+               {places.length !== 0 &&  places.map((place) => (
+              <Marker
+                key={place.id}
+                text={place.name}
+                lat={place.geometry.location.lat()}
+                lng={place.geometry.location.lng()}
+              />
+            ))}
                 </GoogleMap>
             </div>
         </div>
