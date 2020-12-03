@@ -21,7 +21,10 @@ const SearchBar = props => {
                 addPlace={props.addPlace}
                 // onPlacesChanged={props.onPlacesChanged}
                 />
-                <Category/>
+                <Category 
+                map={props.map}
+                mapApi={props.mapApi} 
+                addPlace={props.addPlace}/>
         </div>
         )
     

@@ -26,20 +26,20 @@ class SearchBox extends React.Component {
 
   onPlacesChanged = ({map, mapApi, addPlace}= this.props) => {
     const selected = this.searchBox.getPlaces();
-    let bounds = new mapApi.LatLngBounds();
+    // let bounds = new mapApi.LatLngBounds();
 
-    selected.forEach((place)=>{
-      if (!place.geometry) return;
+    // selected.forEach((place)=>{
+    //   if (!place.geometry) return;
 
-      if (place.geometry.viewport) {
-        bounds.union(place.geometry.viewport);
-      } else {
-        bounds.extend(place.geometry.location);
-      }
+    //   if (place.geometry.viewport) {
+    //     bounds.union(place.geometry.viewport);
+    //   } else {
+    //     bounds.extend(place.geometry.location);
+    //   }
       
-    })
+    // })
    
-    map.fitBounds(bounds);
+    // map.fitBounds(bounds);
     addPlace(selected);
   }
 

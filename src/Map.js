@@ -28,18 +28,29 @@ const Map = props => {
         }
     };
 
-    const addPlace = (place) => {
-        if(place){
-            setPlaces(place);
+    const addPlace = (places) => {
+        if(places){
+            setPlaces(places);
+            onPlacesChanged(places);
         }
       };
 
-    // const onPlacesChanged = places => {
-    //     setCenter(
-    //     (center.lat = places[0].geometry.location.lat()),
-    //     (center.lng = places[0].geometry.location.lng())
-    //     );
-    // };
+    const onPlacesChanged = (places) => {
+        let bounds = new googlemaps.LatLngBounds();
+
+        places.forEach((place)=>{
+        if (!place.geometry) return;
+
+        if (place.geometry.viewport) {
+            bounds.union(place.geometry.viewport);
+        } else {
+            bounds.extend(place.geometry.location);
+        }
+      
+    })
+    map.fitBounds(bounds);
+    };
+
 
     return(
         <div style={{ height: '100vh'}}>
