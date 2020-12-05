@@ -30,33 +30,37 @@ button {
   color: #fff;
 }
 
+.searchBar button i {
+  pointer-events: none;
+}
+
 .category {
   margin: 0 5px;
   text-align: center;
 }
 
-#cafe {
+.cafe {
   background-color: #96c7cb;
 }
-#restaurant {
+.restaurant {
   background-color: #89cdb8;
 }
-#bakery {
+.bakery {
   background-color: #95d8ad;
 }
-#supermarket {
+.supermarket {
   background-color: #b4eaae;
 }
-#shopping_mall {
+.shopping_mall {
   background-color: #e2d4a3;
 }
-#hospital {
+.hospital {
   background-color: #cf88b4;
 }
-#pharmacy {
+.pharmacy {
   background-color: #c490d0;
 }
-#bank {
+.bank {
   background-color: #b38edb;
 }
 
@@ -72,6 +76,7 @@ button {
   width: 240px;
   border: 1px solid #dcdcdc;
   border-radius: 30px;
+  pointer-events: none;
 }
 
 #pac-input:focus {

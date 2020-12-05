@@ -1,4 +1,6 @@
 import React from "react";
+import styled from 'styled-components';
+
 
 const Category = ({ map, mapApi, addPlace}) => {
     let service = new mapApi.places.PlacesService(map);
@@ -20,7 +22,6 @@ const Category = ({ map, mapApi, addPlace}) => {
           type: [placeType],
         };
 
-        console.log(placeType);
         service.nearbySearch(request, showPlace);
     }
       
@@ -36,11 +37,11 @@ const Category = ({ map, mapApi, addPlace}) => {
           
     }
     const onClick = (e) => {
-        console.log(e.target.id);
-        searchByType(e.target.id);
+        console.log("!"+e.target.className);
+        searchByType(e.target.className);
     }
 
-    const categoryList = categories.map((category, i) => <button key = {i} id={category.id} onClick={onClick}><i className={category.icon}></i></button>)
+    const categoryList = categories.map((category, i) => <button key = {i} className={category.id} onClick={onClick}><i className={category.icon}></i></button>)
     
     
     

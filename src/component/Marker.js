@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -16,14 +16,27 @@ const Wrapper = styled.div`
   }
 `;
 
-const Marker = ({ text, onClick }) => (
-  <Wrapper
-    className="marker"
-    alt={text}
-    onClick={onClick}>
-        <img src="https://place-now.s3.ap-northeast-2.amazonaws.com/marker/icon_default.png" alt="marker" width="60px"/>
-  </Wrapper>
-);
+
+const Marker = ({ text, onClick }) => {
+  const [icon, setIcon] = useState("https://place-now.s3.ap-northeast-2.amazonaws.com/marker/icon_default.png");
+  const [iconWidth, setIconWidth] = useState("60px");
+
+  const changeIcon = () => { 
+    setIcon("https://place-now.s3.ap-northeast-2.amazonaws.com/marker/icon_dot.png");
+    setIconWidth("10px");
+
+  }
+
+
+  return (
+    <Wrapper
+      className="marker"
+      alt={text}
+      onClick={changeIcon}>
+          <img src={icon} alt={text} width={iconWidth}/>
+    </Wrapper>
+  );
+} 
 
 Marker.defaultProps = {
   onClick: null,
