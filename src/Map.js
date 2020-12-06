@@ -11,10 +11,11 @@ const Map = props => {
     const [apiReady, setApiReady] = useState(false);
     const [map, setMap] = useState(null);
     const [googlemaps, setGooglemaps] = useState(null);
-    const [center, setCenter] = useState({ lat: 37.5, lng: 127 });
     const [places, setPlaces] = useState([]);
+    const [target, setTarget] = useState(null);
 
     let zoom = 10;
+    const center = { lat: 37.5, lng: 127 };
 
     if(window.screen.width >= 768){
         zoom = 15;
@@ -35,6 +36,10 @@ const Map = props => {
         }
       };
 
+      const markerClicked = (key) => {
+        setTarget(key);
+      }
+
     const onPlacesChanged = (places) => {
         let bounds = new googlemaps.LatLngBounds();
 
@@ -46,7 +51,6 @@ const Map = props => {
         } else {
             bounds.extend(place.geometry.location);
         }
-      
     })
     map.fitBounds(bounds);
     };
@@ -65,20 +69,27 @@ const Map = props => {
                 <GoogleMap
                 bootstrapURLKeys={{ 
                     key: process.env.REACT_APP_GOOGLE_API_KEY,
-                    libraries: 'places', }}
+                    libraries: 'places'
+                     }}
                 defaultCenter={center}
                 defaultZoom={zoom}
                 yesIWantToUseGoogleMapApiInternals
+                onChildClick={markerClicked}
                 onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
-                >
-               {places.length !== 0 &&  places.map((place) => (
-              <Marker
-                key={place.id}
-                text={place.name}
-                lat={place.geometry.location.lat()}
-                lng={place.geometry.location.lng()}
-              />
-            ))}
+                > 
+               {places.length !== 0 && (places.map((place) => {
+                   return(
+                   
+             <Marker 
+                 key={place.place_id}
+                 text={place.name}
+                 lat={place.geometry.location.lat()}
+                 lng={place.geometry.location.lng()}
+                 target={place.place_id === target}
+             />
+         )}
+    ))
+               }
                 </GoogleMap>
             </div>
         </div>

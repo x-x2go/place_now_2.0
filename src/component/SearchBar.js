@@ -7,7 +7,7 @@ import SearchBox from "./SearchBox";
 
 const SearchBar = props => {
 
-        return (
+        return ( 
             <div className="searchBar">
                 <div id="mainLogo">
                     <img

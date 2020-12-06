@@ -11,29 +11,18 @@ const Wrapper = styled.div`
   user-select: none;
   transform: translate(-50%, -90%);
   cursor: ${(props) => (props.onClick ? 'pointer' : 'default')};
-  &:hover {
-    z-index: 1;
-  }
+  z-index: 1;
 `;
 
 
-const Marker = ({ text, onClick }) => {
-  const [icon, setIcon] = useState("https://place-now.s3.ap-northeast-2.amazonaws.com/marker/icon_default.png");
-  const [iconWidth, setIconWidth] = useState("60px");
-
-  const changeIcon = () => { 
-    setIcon("https://place-now.s3.ap-northeast-2.amazonaws.com/marker/icon_dot.png");
-    setIconWidth("10px");
-
-  }
-
+const Marker = ({ text, target}) => {
+  let icon = target ? { name : "icon_dot", width : "10px" } : { name :"icon_default", width : "40px" };
 
   return (
     <Wrapper
       className="marker"
-      alt={text}
-      onClick={changeIcon}>
-          <img src={icon} alt={text} width={iconWidth}/>
+      alt={text}>
+          <img src={`https://place-now.s3.ap-northeast-2.amazonaws.com/marker/${icon.name}.png`} alt={text} width={icon.width}/>
     </Wrapper>
   );
 } 
