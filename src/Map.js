@@ -4,7 +4,7 @@ import SearchBar from './component/SearchBar';
 import dotenv from "dotenv";
 import './Map.css';
 import Marker from './component/Marker';
-
+ 
 dotenv.config();
 
 const Map = props => {
@@ -31,6 +31,7 @@ const Map = props => {
 
     const addPlace = (places) => {
         if(places){
+            console.log(places[0]);
             setPlaces(places);
             onPlacesChanged(places);
         }
@@ -86,6 +87,7 @@ const Map = props => {
                  lat={place.geometry.location.lat()}
                  lng={place.geometry.location.lng()}
                  target={place.place_id === target}
+                 place={place}
              />
          )}
     ))
