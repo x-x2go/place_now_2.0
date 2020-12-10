@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import InfoWindow from './Infowindow';
 
 const Wrapper = styled.div`
-  z-index: 10;
+  z-index: ${(props) => (props.target ? 999 : 11)};
   position: absolute;
   top: 50%;
   left: 50%;
@@ -13,19 +13,43 @@ const Wrapper = styled.div`
   user-select: none;
   transform: translate(-50%, -90%);
   cursor: ${(props) => (props.onClick ? 'pointer' : 'default')};
+
+  &:hover{
+    z-index:999;
+    &::after{
+      content: "${(props) => (props.name)}";
+      font-size: 13px;
+      line-height: 1.3;
+      position: absolute;
+      top: 70%;
+      left: 70%;
+      width: max-content;
+      height: fit-content;
+      background-color: white;
+      padding: 2px 5px;
+      border-radius: 8px;
+      border: 1px #cdcdcd solid;
+    }
+  }
+
 `;
 
 
 const Marker = ({ text, target, place}) => {
-  let icon = target ? { name : "icon_dot", width : "10px" } : { name :"icon_default", width : "40px" };
+  const placeTypes = ["cafe","restaurant","bakery","supermarket","shopping_mall","hospital","pharmacy","bank"];
+  let iconType = placeTypes.includes(place.types[0]) ? place.types[0] : "default";
+  let icon = target ? { name : "dot", width : "10px" } : { name : iconType , width : "40px" };
 
   return (
+    <div>
+    {target && <InfoWindow place={place}/>}
     <Wrapper
       className="marker"
+      name = {place.name}
       alt={text}>
-          {target && <InfoWindow place={place}/>}
-          <img src={`https://place-now.s3.ap-northeast-2.amazonaws.com/marker/${icon.name}.png`} alt={text} width={icon.width}/>
+          <img src={`https://place-now.s3.ap-northeast-2.amazonaws.com/marker/icon_${icon.name}.png`} alt={text} width={icon.width}/>
     </Wrapper>
+    </div>
   );
 } 
 

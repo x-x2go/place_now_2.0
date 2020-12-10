@@ -82,6 +82,7 @@ const Map = props => {
                    return(
                    
              <Marker 
+             style={{zIndex:"10"}}
                  key={place.place_id}
                  text={place.name}
                  lat={place.geometry.location.lat()}

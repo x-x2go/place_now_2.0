@@ -28,7 +28,7 @@ const Category = ({ map, mapApi, addPlace}) => {
     const showPlace = (results, status) => {
            
             if (status === mapApi.places.PlacesServiceStatus.OK) {
-                console.log(results.map(x=>x.name));
+                console.log(results.map(x=>x.types));
                 addPlace(results);
             } else {
               console.log(status);
