@@ -43,7 +43,7 @@
   cursor: pointer;
 }
 .more_detail:hover {
-  background-image: linear-gradient(to right, #37ecba, #72afd3);
+  background-image: linear-gradient(to right, #f37c56, #ea6460);
   color: #ffffff;
 }
 .info_etc {

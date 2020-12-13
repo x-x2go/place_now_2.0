@@ -8,8 +8,8 @@ button {
 
 #mainLogo img {
   margin: 10px;
-  margin-top: 40px;
-  width: 200px;
+  margin-top: 50px;
+  width: 140px;
 }
 
 .searchBar {
@@ -24,9 +24,15 @@ button {
   width: 50px;
   height: 50px;
   display: inline-block;
-  margin: 10px;
   border-radius: 30px;
   justify-content: center;
+  color: #aaaaaa;
+  background-color: #fff;
+  border: 1px solid #aaaaaa;
+}
+
+.searchBar button:hover {
+  background-color: #aaaaaa;
   color: #fff;
 }
 
@@ -34,9 +40,14 @@ button {
   pointer-events: none;
 }
 
+.searchBar p {
+  margin: 5px 0;
+  font-size: 12px;
+}
+
 .category {
-  margin: 0 5px;
-  text-align: center;
+  margin: 10px 13px;
+  display: inline-block;
 }
 
 .cafe {
@@ -74,7 +85,7 @@ button {
   margin: 20px;
   text-overflow: ellipsis;
   width: 240px;
-  border: 1px solid #dcdcdc;
+  border: 1px solid #aaaaaa;
   border-radius: 30px;
   pointer-events: none;
 }

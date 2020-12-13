@@ -29,6 +29,10 @@ const Map = props => {
         }
     };
 
+    const onClickMap = () =>{
+        setTarget(null);
+    }
+
     const addPlace = (places) => {
         if(places){
             console.log(places[0]);
@@ -76,6 +80,7 @@ const Map = props => {
                 defaultZoom={zoom}
                 yesIWantToUseGoogleMapApiInternals
                 onChildClick={markerClicked}
+                onClick={onClickMap}
                 onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
                 > 
                {places.length !== 0 && (places.map((place) => {

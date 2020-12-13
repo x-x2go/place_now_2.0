@@ -11,7 +11,7 @@ const SearchBar = props => {
             <div className="searchBar">
                 <div id="mainLogo">
                     <img
-                    src="https://place-now.s3.ap-northeast-2.amazonaws.com/logo/logo.png"
+                    src="https://place-now.s3.ap-northeast-2.amazonaws.com/logo/place_now_logo.png"
                     alt="place-now logo"
                     />
                 </div>
