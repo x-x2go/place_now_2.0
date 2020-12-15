@@ -3,6 +3,32 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import InfoWindow from './Infowindow';
 
+
+const Wrapp = styled.div`
+  z-index: ${(props) => (props.target ? 999 : 11)};
+  width: 40px;
+  height: 40px;
+  border-radius: 50% 50% 50% 0;
+  background: #ea6460;
+  position: absolute;
+  transform: rotate(-45deg);
+  left: 50%;
+  top: 50%;
+  margin: -20px 0 0 -20px;
+  animation-name: bounce;
+  animation-fill-mode: both;
+  animation-duration: 1s;
+  &:after{
+    content: '';
+    width: 28px;
+    height: 28px;
+    margin: 6px 0 0 6px;
+    background: #fff;
+    position: absolute;
+    border-radius: 50%;
+  }
+`;
+
 const Wrapper = styled.div`
   z-index: ${(props) => (props.target ? 999 : 11)};
   position: absolute;
@@ -39,6 +65,7 @@ const Marker = ({ text, target, place}) => {
   const placeTypes = ["cafe","restaurant","bakery","supermarket","shopping_mall","hospital","pharmacy","bank"];
   let iconType = placeTypes.includes(place.types[0]) ? place.types[0] : "default";
   let icon = target ? { name : "dot", width : "10px" } : { name : iconType , width : "40px" };
+
 
   return (
     <div>

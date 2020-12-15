@@ -4,6 +4,7 @@ import SearchBar from './component/SearchBar';
 import dotenv from "dotenv";
 import './Map.css';
 import Marker from './component/Marker';
+import SearchDetailBar from './component/SearchDetailBar';
  
 dotenv.config();
 
@@ -35,13 +36,44 @@ const Map = props => {
 
     const addPlace = (places) => {
         if(places){
-            console.log(places[0]);
-            setPlaces(places);
+            Promise.all(places.map( x=> getPlaceDetail(x))).then(value=>{
+                setPlaces(value);
+            });
             onPlacesChanged(places);
         }
       };
 
+      const getPlaceDetail =  (temp_place) => {
+                const service = new googlemaps.places.PlacesService(map);
+                
+                const request = {
+                placeId: temp_place.place_id,
+                fields: [
+                    "name",
+                    "formatted_address", 
+                    "formatted_phone_number",
+                    "geometry",
+                    "opening_hours",
+                    "rating",
+                    "type",
+                    "icon",
+                ],
+                };
+
+                return new Promise( (resolve, reject) => {
+                   service.getDetails(request, function(place, status) {
+                        if (status === googlemaps.places.PlacesServiceStatus.OK) {
+                            resolve(place);
+                        }else{
+                            window.setTimeout( ()=>{resolve(getPlaceDetail(temp_place))}, 2000);
+                            console.log(status);
+                        }
+                    });
+                })
+      }
+
       const markerClicked = (key) => {
+           // infowindow 닫기
         setTarget(key);
       }
 
@@ -71,6 +103,7 @@ const Map = props => {
             // onPlacesChanged={onPlacesChanged}
             />)}
             <div className = "googleMap">
+                {places.length !== 0 && <SearchDetailBar/>}
                 <GoogleMap
                 bootstrapURLKeys={{ 
                     key: process.env.REACT_APP_GOOGLE_API_KEY,

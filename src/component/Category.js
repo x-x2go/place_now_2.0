@@ -28,16 +28,13 @@ const Category = ({ map, mapApi, addPlace}) => {
     const showPlace = (results, status) => {
            
             if (status === mapApi.places.PlacesServiceStatus.OK) {
-                console.log(results.map(x=>x.types));
                 addPlace(results);
             } else {
-              console.log(status);
               alert("no results");
             }
           
     }
     const onClick = (e) => {
-        console.log("!"+e.target.className);
         searchByType(e.target.className);
     }
 
