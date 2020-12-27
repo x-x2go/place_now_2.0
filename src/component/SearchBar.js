@@ -7,6 +7,7 @@ import SearchBox from "./SearchBox";
 
 const SearchBar = props => {
 
+
         return ( 
             <div className="searchBar">
                 <div id="mainLogo">
@@ -24,7 +25,8 @@ const SearchBar = props => {
                 <Category 
                 map={props.map}
                 mapApi={props.mapApi} 
-                addPlace={props.addPlace}/>
+                onClickCategory={props.onClickCategory}
+                />
         </div>
         )
     

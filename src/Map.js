@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import GoogleMap from 'google-map-react';
 import SearchBar from './component/SearchBar';
 import dotenv from "dotenv";
@@ -14,28 +14,68 @@ const Map = props => {
     const [googlemaps, setGooglemaps] = useState(null);
     const [places, setPlaces] = useState([]);
     const [target, setTarget] = useState(null);
+    
+    let openNow = false;
+    let placeType=useRef();
 
     let zoom = 10;
+    let service;
     const center = { lat: 37.5, lng: 127 };
 
     if(window.screen.width >= 768){
         zoom = 15;
     }
 
+
     const handleApiLoaded = (map, maps) => {
         if (map && maps) {
-        setApiReady(true);
-        setMap(map);
-        setGooglemaps(maps);
-        }
+            setApiReady(true);
+            setMap(map);
+            setGooglemaps(maps);
+        }  
     };
 
     const onClickMap = () =>{
         setTarget(null);
     }
 
+    const onClickIsOpen = () => {
+        openNow = !openNow;
+        searchByType();
+    }
+
+    const onClickCategory = (type) => {
+        placeType.current = type;
+        searchByType();
+    }
+
+    const searchByType = () => {
+        console.log(placeType.current);
+        service = new googlemaps.places.PlacesService(map);
+        let request = {
+          location: map.getCenter(),
+          radius: "500",
+          type: [placeType.current],
+          openNow: openNow,
+        };
+
+        service.nearbySearch(request, showPlace);
+    }
+      
+    const showPlace = (results, status) => {
+           
+            if (status === googlemaps.places.PlacesServiceStatus.OK) {
+                addPlace(results);
+            } else {
+              alert("no results");
+            }
+          
+    }
+
     const addPlace = (places) => {
         if(places){
+            // Promise만으로는 너무 Marker가 느리게 뜨기 때문에 우선적으로 Marker표시
+            setPlaces(places);
             Promise.all(places.map( x=> getPlaceDetail(x))).then(value=>{
                 setPlaces(value);
             });
@@ -44,8 +84,6 @@ const Map = props => {
       };
 
       const getPlaceDetail =  (temp_place) => {
-                const service = new googlemaps.places.PlacesService(map);
-                
                 const request = {
                 placeId: temp_place.place_id,
                 fields: [
@@ -100,14 +138,15 @@ const Map = props => {
             map={map}
             mapApi={googlemaps}
             addPlace={addPlace}
+            onClickCategory = {onClickCategory}
             // onPlacesChanged={onPlacesChanged}
             />)}
             <div className = "googleMap">
-                {places.length !== 0 && <SearchDetailBar/>}
+                {places.length !== 0 && <SearchDetailBar onClickIsOpen={onClickIsOpen}/>}
                 <GoogleMap
                 bootstrapURLKeys={{ 
                     key: process.env.REACT_APP_GOOGLE_API_KEY,
-                    libraries: 'places'
+                    libraries: 'places' 
                      }}
                 defaultCenter={center}
                 defaultZoom={zoom}

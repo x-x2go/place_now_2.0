@@ -1,9 +1,9 @@
 import React from "react";
-import styled from 'styled-components';
 
 
-const Category = ({ map, mapApi, addPlace}) => {
-    let service = new mapApi.places.PlacesService(map);
+const Category = ({ map, mapApi, onClickCategory}) => {
+
+
     const categories = [
         { id: "cafe",name: "카페", icon: "fas fa-coffee"}, 
         { id: "restaurant",name: "음식점", icon: "fas fa-utensils"}, 
@@ -15,31 +15,16 @@ const Category = ({ map, mapApi, addPlace}) => {
         { id: "bank",name: "은행", icon: "fas fa-piggy-bank"}
     ];
 
-    const searchByType = (placeType) => {
-        let request = {
-          location: map.getCenter(),
-          radius: "500",
-          type: [placeType],
-        };
 
-        service.nearbySearch(request, showPlace);
-    }
-      
-    const showPlace = (results, status) => {
-           
-            if (status === mapApi.places.PlacesServiceStatus.OK) {
-                addPlace(results);
-            } else {
-              alert("no results");
-            }
-          
-    }
+
+
+    
     const onClick = (e) => {
-        searchByType(e.target.className);
+        onClickCategory(e.target.className);
     }
 
     const categoryList = categories.map((category, i) => 
-    (<div className="category"><button key = {i} className={category.id} onClick={onClick}>
+    (<div key = {i} className="category"><button  className={category.id} onClick={onClick}>
         <i className={category.icon}></i>
     </button>
     <p>{category.name}</p></div>)
