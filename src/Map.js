@@ -72,12 +72,48 @@ const Map = props => {
           
     }
 
+    const findIsOpen =(periods, searchTime)=> {
+        const currentTime = new Date();
+        const dayOfWeek = currentTime.getDay();
+      
+        for (let i = 0; i < periods.length; i++) {
+          //예외: 24시간 영업 시
+          if (!periods[i].close) return true;
+          if (periods[i].open.day === dayOfWeek) {
+            let openTime = Number(periods[i].open.time);
+            let closeTime = Number(periods[i].close.time);
+      
+            if (openTime > closeTime) {
+              // 예외: 새벽까지 영업 시
+              if (openTime <= searchTime || searchTime <= closeTime) return true;
+            } else {
+              if (openTime <= searchTime && searchTime <= closeTime) return true;
+            }
+            return false;
+          }
+        }
+        return false;
+      }
+
+    const searchByTime = (time) => {
+        const searchTime = Number(time.replace(":", ""));
+      
+        const openPlaces = places.filter((place) => {
+          if (!place.opening_hours) return false;
+          return findIsOpen(place.opening_hours.periods, searchTime);
+        });
+      
+        setPlaces(openPlaces);
+      }
+
+
     const addPlace = (places) => {
         if(places){
             // Promise만으로는 너무 Marker가 느리게 뜨기 때문에 우선적으로 Marker표시
             setPlaces(places);
             Promise.all(places.map( x=> getPlaceDetail(x))).then(value=>{
                 setPlaces(value);
+                console.log(value);
             });
             onPlacesChanged(places);
         }
@@ -87,6 +123,7 @@ const Map = props => {
                 const request = {
                 placeId: temp_place.place_id,
                 fields: [
+                    "place_id",
                     "name",
                     "formatted_address", 
                     "formatted_phone_number",
@@ -112,6 +149,7 @@ const Map = props => {
 
       const markerClicked = (key) => {
            // infowindow 닫기
+           console.log("clicked "+key);
         setTarget(key);
       }
 
@@ -142,7 +180,7 @@ const Map = props => {
             // onPlacesChanged={onPlacesChanged}
             />)}
             <div className = "googleMap">
-                {places.length !== 0 && <SearchDetailBar onClickIsOpen={onClickIsOpen}/>}
+                {places.length !== 0 && <SearchDetailBar onClickIsOpen={onClickIsOpen} searchByType= {searchByType} searchByTime={searchByTime}/>}
                 <GoogleMap
                 bootstrapURLKeys={{ 
                     key: process.env.REACT_APP_GOOGLE_API_KEY,
@@ -159,7 +197,7 @@ const Map = props => {
                    return(
                    
              <Marker 
-             style={{zIndex:"10"}}
+                style={{zIndex:"10"}}
                  key={place.place_id}
                  text={place.name}
                  lat={place.geometry.location.lat()}

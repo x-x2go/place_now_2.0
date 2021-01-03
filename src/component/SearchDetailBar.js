@@ -6,9 +6,9 @@ import '../style/SearchDetailBar.css';
 
 
 
-const SearchDetailBar = ({onClickIsOpen }) => {
+const SearchDetailBar = ({onClickIsOpen, searchByType, searchByTime }) => {
 
-  const inputTime = useRef();
+  const inputTime = useRef(); 
 
     const getCurrentTime = () => {
       let currentTime = new Date();
@@ -19,22 +19,28 @@ const SearchDetailBar = ({onClickIsOpen }) => {
       return currentHours + ":" + currentMin;
     }
 
-    const onClick =()=> {
+    const onClickOpenNow =()=> {
       inputTime.current.value = getCurrentTime();
       onClickIsOpen();  
     }
-    
+
+    const onClickSearchAgain = () => {
+      searchByType();
+    }
+    const onClicksearchByTime = () => {
+      searchByTime(inputTime.current.value);
+    }
 
     return (
         <div id="searchDetail" className="detailSearchBar">
-        <button id="openNow" className="openNow" onClick={onClick}>현재 영업중</button>
+        <button id="openNow" className="openNow" onClick={onClickOpenNow}>현재 영업중</button>
         <form id="timeBar" className="timeBar">
           <input type="time" id="timeSelection" name="timeSelection" ref={inputTime}/>
-          <button type="button" id="setTimeButton">
+          <button type="button" id="setTimeButton" onClick={onClicksearchByTime}>
             <i className="fas fa-search"></i>
           </button>
         </form>
-        <button id="searchAgain">
+        <button id="searchAgain" onClick={onClickSearchAgain}>
           현재 위치에서 검색<i className="fas fa-search"></i>
         </button>
         <button id="closeAll"><i className="fas fa-times"></i></button>

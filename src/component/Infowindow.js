@@ -11,7 +11,7 @@ const Infowindow = ({ place }) => {
                     <div className='more_detail'>&#62;</div>
                 </div>
                 <div className='info_etc'>
-                    <p>{ place.vicinity }</p>
+                    <p>{ place.vicinity || place.formatted_address }</p>
                     <p>⭐{ place.rating || "별점없음"}</p>
                 </div>
             </div>
