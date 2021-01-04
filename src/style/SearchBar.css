@@ -83,6 +83,7 @@ button {
   margin-left: 12px;
   padding: 5px 11px 5px 13px;
   margin: 20px;
+  margin-top: 10px;
   text-overflow: ellipsis;
   width: 240px;
   border: 1px solid #aaaaaa;

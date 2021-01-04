@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Category from "./Category";
 import "../style/SearchBar.css";
 import SearchBox from "./SearchBox";
+import DetailInfo from "./DetailInfo";
 
 
 
-const SearchBar = props => {
-
+const SearchBar = ({map, mapApi, addPlace, onClickCategory, detailInfo}) => {
 
         return ( 
             <div className="searchBar">
@@ -17,16 +17,20 @@ const SearchBar = props => {
                     />
                 </div>
                 <SearchBox
-                map={props.map}
-                mapApi={props.mapApi}
-                addPlace={props.addPlace}
-                // onPlacesChanged={props.onPlacesChanged}
+                map={map}
+                mapApi={mapApi}
+                addPlace={addPlace}
+                // onPlacesChanged={onPlacesChanged}
                 />
+
+                {detailInfo? <DetailInfo info={detailInfo}/> : 
                 <Category 
-                map={props.map}
-                mapApi={props.mapApi} 
-                onClickCategory={props.onClickCategory}
-                />
+                map={map}
+                mapApi={mapApi} 
+                onClickCategory={onClickCategory}/>
+                }
+
+              
         </div>
         )
     

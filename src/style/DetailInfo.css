@@ -1,0 +1,48 @@
+.place_title h1 {
+  font-size: 22px;
+  color: #de4f4f;
+  width: 300px;
+  margin: auto;
+}
+
+.info_row {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0px 30px;
+}
+.info_row h2 {
+  font-size: 16px;
+}
+.info_row h2 i {
+  color: #faeb78;
+}
+
+.icon {
+  width: 30px;
+  height: 20px;
+  display: inline-block;
+  margin: 15px 5px 15px 0px;
+  vertical-align: top;
+  text-align: left;
+}
+
+.info_block {
+  padding: 5px;
+  border-top: 1.2px solid #efefef;
+}
+
+.place_info {
+  display: inline-block;
+  margin: 10px 0;
+  width: 200px;
+  font-size: 14px;
+  font-weight: 200;
+  line-height: 25px;
+  padding: 5px 0 5px 10px;
+  text-align: left;
+}
+
+.place_info span {
+  display: inline-block;
+}

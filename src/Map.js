@@ -14,6 +14,7 @@ const Map = props => {
     const [googlemaps, setGooglemaps] = useState(null);
     const [places, setPlaces] = useState([]);
     const [target, setTarget] = useState(null);
+    const [detailInfo, setDetailInfo] = useState(null);
     
     let openNow = false;
     let placeType=useRef();
@@ -48,6 +49,7 @@ const Map = props => {
         placeType.current = type;
         searchByType();
     }
+
 
     const searchByType = () => {
         console.log(placeType.current);
@@ -177,7 +179,7 @@ const Map = props => {
             mapApi={googlemaps}
             addPlace={addPlace}
             onClickCategory = {onClickCategory}
-            // onPlacesChanged={onPlacesChanged}
+            detailInfo = {detailInfo}
             />)}
             <div className = "googleMap">
                 {places.length !== 0 && <SearchDetailBar onClickIsOpen={onClickIsOpen} searchByType= {searchByType} searchByTime={searchByTime}/>}
@@ -204,6 +206,7 @@ const Map = props => {
                  lng={place.geometry.location.lng()}
                  target={place.place_id === target}
                  place={place}
+                 setDetailInfo={setDetailInfo}
              />
          )}
     ))
