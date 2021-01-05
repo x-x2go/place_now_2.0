@@ -180,6 +180,7 @@ const Map = props => {
             addPlace={addPlace}
             onClickCategory = {onClickCategory}
             detailInfo = {detailInfo}
+            setDetailInfo={setDetailInfo}
             />)}
             <div className = "googleMap">
                 {places.length !== 0 && <SearchDetailBar onClickIsOpen={onClickIsOpen} searchByType= {searchByType} searchByTime={searchByTime}/>}

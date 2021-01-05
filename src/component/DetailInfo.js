@@ -4,16 +4,28 @@ import '../style/DetailInfo.css';
 
 const InfoBlock = styled.div`
 
-transition: height 0.5s ease-in-out;
 width: 100%;
 height: 80%;
+position: absolute;
+bottom: 0;
 background: white;
-padding-top: 70px;
-border-radius: 200px 200px 0 0 /15%;
+border-radius: 200px 200px 0 0 /20%;
+animation-duration: 0.5s;
+animation-name:  growup;
+
+
+@keyframes growup {
+    from {
+      height: 0px;
+    }
+    to {
+      height: 80%;
+    }
+  }
 
 `
 
-const DetailInfo = ({ info }) => {
+const DetailInfo = ({ info, setDetailInfo }) => {
 
     // useEffect(()=>{
     //     const today = new Date();
@@ -21,10 +33,16 @@ const DetailInfo = ({ info }) => {
     // },[]);
 
     const showWeekDay = text =>  <span>{text}</span>
+
+    const onClickClose = () => {
+        
+        setDetailInfo(null);
+    }
       
     
     return (
     <InfoBlock>
+        <div className='closeBtn' onClick={onClickClose}><i className="fas fa-chevron-down"></i></div>
         <div className='place_title'><h1>{info.name}</h1></div>
         <div className='info_row'>
         <h2><i className='fas fa-star'></i>{info.rating || '별점 없음'}</h2>

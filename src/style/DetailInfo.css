@@ -1,3 +1,10 @@
+.closeBtn {
+  font-size: 26px;
+  width: 50px;
+  height: fit-content;
+  margin: 10px auto 80px;
+}
+
 .place_title h1 {
   font-size: 22px;
   color: #de4f4f;
@@ -45,4 +52,14 @@
 
 .place_info span {
   display: inline-block;
+}
+
+@keyframes growup {
+  from {
+    height: 0px;
+  }
+
+  to {
+    height: 100%;
+  }
 }

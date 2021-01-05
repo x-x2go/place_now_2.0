@@ -6,7 +6,7 @@ import DetailInfo from "./DetailInfo";
 
 
 
-const SearchBar = ({map, mapApi, addPlace, onClickCategory, detailInfo}) => {
+const SearchBar = ({map, mapApi, addPlace, onClickCategory, detailInfo, setDetailInfo}) => {
 
         return ( 
             <div className="searchBar">
@@ -16,18 +16,20 @@ const SearchBar = ({map, mapApi, addPlace, onClickCategory, detailInfo}) => {
                     alt="place-now logo"
                     />
                 </div>
+
+                { detailInfo ?
+                <DetailInfo info={detailInfo} setDetailInfo={setDetailInfo}/> : 
+                <>
                 <SearchBox
                 map={map}
                 mapApi={mapApi}
                 addPlace={addPlace}
-                // onPlacesChanged={onPlacesChanged}
                 />
-
-                {detailInfo? <DetailInfo info={detailInfo}/> : 
                 <Category 
                 map={map}
                 mapApi={mapApi} 
                 onClickCategory={onClickCategory}/>
+                </>
                 }
 
               
