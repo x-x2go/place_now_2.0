@@ -24,23 +24,16 @@ const SearchDetailBar = ({onClickIsOpen, searchByType, searchByTime }) => {
       onClickIsOpen();  
     }
 
-    const onClickSearchAgain = () => {
-      searchByType();
-    }
-    const onClicksearchByTime = () => {
-      searchByTime(inputTime.current.value);
-    }
-
     return (
         <div id="searchDetail" className="detailSearchBar">
         <button id="openNow" className="openNow" onClick={onClickOpenNow}>현재 영업중</button>
         <form id="timeBar" className="timeBar">
           <input type="time" id="timeSelection" name="timeSelection" ref={inputTime}/>
-          <button type="button" id="setTimeButton" onClick={onClicksearchByTime}>
+          <button type="button" id="setTimeButton" onClick={()=>{searchByTime(inputTime.current.value);}}>
             <i className="fas fa-search"></i>
           </button>
         </form>
-        <button id="searchAgain" onClick={onClickSearchAgain}>
+        <button id="searchAgain" onClick={searchByType}>
           현재 위치에서 검색<i className="fas fa-search"></i>
         </button>
         <button id="closeAll"><i className="fas fa-times"></i></button>

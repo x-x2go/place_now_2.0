@@ -36,10 +36,6 @@ const Map = props => {
         }  
     };
 
-    const onClickMap = () =>{
-        setTarget(null);
-    }
-
     const onClickIsOpen = () => {
         openNow = !openNow;
         searchByType();
@@ -181,6 +177,7 @@ const Map = props => {
             onClickCategory = {onClickCategory}
             detailInfo = {detailInfo}
             setDetailInfo={setDetailInfo}
+            findIsOpen={findIsOpen}
             />)}
             <div className = "googleMap">
                 {places.length !== 0 && <SearchDetailBar onClickIsOpen={onClickIsOpen} searchByType= {searchByType} searchByTime={searchByTime}/>}
@@ -193,7 +190,9 @@ const Map = props => {
                 defaultZoom={zoom}
                 yesIWantToUseGoogleMapApiInternals
                 onChildClick={markerClicked}
-                onClick={onClickMap}
+                onClick={() =>{
+                    setTarget(null);
+                }}
                 onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
                 > 
                {places.length !== 0 && (places.map((place) => {

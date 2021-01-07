@@ -51,31 +51,6 @@ button {
   display: inline-block;
 }
 
-.cafe {
-  background-color: #96c7cb;
-}
-.restaurant {
-  background-color: #89cdb8;
-}
-.bakery {
-  background-color: #95d8ad;
-}
-.supermarket {
-  background-color: #b4eaae;
-}
-.shopping_mall {
-  background-color: #e2d4a3;
-}
-.hospital {
-  background-color: #cf88b4;
-}
-.pharmacy {
-  background-color: #c490d0;
-}
-.bank {
-  background-color: #b38edb;
-}
-
 #pac-input {
   background-color: #fff;
   font-family: Roboto;

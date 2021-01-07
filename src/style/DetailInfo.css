@@ -20,9 +20,11 @@
 }
 .info_row h2 {
   font-size: 16px;
+  display: inline-block;
 }
 .info_row h2 i {
   color: #faeb78;
+  margin: 0 10px;
 }
 
 .icon {
@@ -54,6 +56,26 @@
   display: inline-block;
 }
 
+.infoBlock {
+  width: 100%;
+  height: 80%;
+  position: absolute;
+  bottom: 0;
+  background: white;
+  border-radius: 200px 200px 0 0 /20%;
+  animation-duration: 0.5s;
+  animation-name: growup;
+}
+
+.infoBlock[showInfo="0"] {
+  animation-name: growup;
+  animation-duration: 0.5s;
+}
+.infoBlock[showInfo="1"] {
+  animation-name: growdown;
+  animation-duration: 0.5s;
+}
+
 @keyframes growup {
   from {
     height: 0px;
@@ -61,5 +83,48 @@
 
   to {
     height: 100%;
+  }
+}
+
+@keyframes growdown {
+  from {
+    height: 90%;
+  }
+
+  to {
+    height: 0px;
+  }
+}
+
+.openBtn {
+  background: #777777;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.on {
+  background: #de4f4f;
+  box-shadow: 0 0 0 0 #de4f4f;
+  transform: scale(1);
+  animation: wave 2s infinite;
+}
+
+@keyframes wave {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(190, 55, 55, 0.5);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 7px rgba(190, 55, 55, 0);
+  }
+
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(190, 55, 55, 0);
   }
 }

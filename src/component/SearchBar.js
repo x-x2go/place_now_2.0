@@ -6,7 +6,7 @@ import DetailInfo from "./DetailInfo";
 
 
 
-const SearchBar = ({map, mapApi, addPlace, onClickCategory, detailInfo, setDetailInfo}) => {
+const SearchBar = ({map, mapApi, addPlace, onClickCategory, detailInfo, setDetailInfo, findIsOpen}) => {
 
         return ( 
             <div className="searchBar">
@@ -18,7 +18,7 @@ const SearchBar = ({map, mapApi, addPlace, onClickCategory, detailInfo, setDetai
                 </div>
 
                 { detailInfo ?
-                <DetailInfo info={detailInfo} setDetailInfo={setDetailInfo}/> : 
+                <DetailInfo info={detailInfo} setDetailInfo={setDetailInfo} findIsOpen={findIsOpen}/> : 
                 <>
                 <SearchBox
                 map={map}

@@ -16,9 +16,6 @@ const Category = ({ map, mapApi, onClickCategory}) => {
     ];
 
 
-
-
-    
     const onClick = (e) => {
         onClickCategory(e.target.className);
     }
