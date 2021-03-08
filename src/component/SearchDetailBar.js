@@ -1,14 +1,15 @@
-import React, { useRef } from "react";
+import React, { useState, useRef } from "react";
 import '../style/SearchDetailBar.css';
-
-
-
-
 
 
 const SearchDetailBar = ({onClickIsOpen, searchByType, searchByTime }) => {
 
+  const [openBtnClick, setopenBtnClick] = useState(false);
   const inputTime = useRef(); 
+
+  const btnColor ={
+    background : openBtnClick? "#f37c56" : "#EFEFEF"
+  }
 
     const getCurrentTime = () => {
       let currentTime = new Date();
@@ -21,12 +22,13 @@ const SearchDetailBar = ({onClickIsOpen, searchByType, searchByTime }) => {
 
     const onClickOpenNow =()=> {
       inputTime.current.value = getCurrentTime();
+      setopenBtnClick(!openBtnClick);
       onClickIsOpen();  
     }
 
     return (
         <div id="searchDetail" className="detailSearchBar">
-        <button id="openNow" className="openNow" onClick={onClickOpenNow}>현재 영업중</button>
+        <button id="openNow" className="openNow" onClick={onClickOpenNow} style={btnColor}>현재 영업중</button>
         <form id="timeBar" className="timeBar">
           <input type="time" id="timeSelection" name="timeSelection" ref={inputTime}/>
           <button type="button" id="setTimeButton" onClick={()=>{searchByTime(inputTime.current.value);}}>
@@ -39,8 +41,6 @@ const SearchDetailBar = ({onClickIsOpen, searchByType, searchByTime }) => {
         <button id="closeAll"><i className="fas fa-times"></i></button>
       </div>
     )
-
-
 }
 
 export default SearchDetailBar;

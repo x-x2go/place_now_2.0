@@ -4,6 +4,6 @@ import Map from './Map';
 import "./index.css"
 
 ReactDOM.render(
-    <Map />,
+  <Map />,
   document.getElementById('root')
 );

@@ -13,7 +13,7 @@ const Category = ({ map, mapApi, onClickCategory}) => {
         { id: "hospital",name: "병원", icon: "fas fa-hospital-alt"},
         { id: "pharmacy",name: "약국", icon: "fas fa-pills"},
         { id: "bank",name: "은행", icon: "fas fa-piggy-bank"}
-    ];
+    ]; 
 
 
     const onClick = (e) => {

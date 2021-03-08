@@ -1,5 +1,4 @@
 import React, {useState, useRef} from "react";
-import styled from 'styled-components';
 import '../style/DetailInfo.css';
 
 const DetailInfo = ({ info, setDetailInfo, findIsOpen}) => {
