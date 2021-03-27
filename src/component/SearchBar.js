@@ -20,11 +20,11 @@ const SearchBar = ({map, mapApi, addPlace, onClickCategory, detailInfo, setDetai
                 { detailInfo ?
                 <DetailInfo info={detailInfo} setDetailInfo={setDetailInfo} findIsOpen={findIsOpen}/> : 
                 <>
-                <SearchBox
+                {/*<SearchBox
                 map={map}
                 mapApi={mapApi}
                 addPlace={addPlace}
-                />
+                />*/}
                 <Category 
                 map={map}
                 mapApi={mapApi} 

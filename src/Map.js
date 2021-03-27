@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import GoogleMap from 'google-map-react';
-import SearchBar from './component/SearchBar';
 import dotenv from "dotenv";
 import './Map.css';
 import Marker from './component/Marker';
@@ -8,7 +7,7 @@ import SearchDetailBar from './component/SearchDetailBar';
  
 dotenv.config();
 
-const Map = props => {
+const Map = ({ category }) => {
     const [apiReady, setApiReady] = useState(false);
     const [map, setMap] = useState(null);
     const [googlemaps, setGooglemaps] = useState(null);
@@ -17,7 +16,6 @@ const Map = props => {
     const [detailInfo, setDetailInfo] = useState(null);
     
     let openNow = false;
-    let placeType=useRef();
 
     let zoom = 10;
     let service;
@@ -27,7 +25,6 @@ const Map = props => {
         zoom = 15;
     }
 
-
     const handleApiLoaded = (map, maps) => {
         if (map && maps) {
             setApiReady(true);
@@ -36,24 +33,26 @@ const Map = props => {
         }  
     };
 
+
+    useEffect(()=>{
+        if (map && googlemaps && category){
+            searchByType();
+        }
+    },[category]);
+
+    
     const onClickIsOpen = () => {
         openNow = !openNow;
         searchByType();
     }
 
-    const onClickCategory = (type) => {
-        placeType.current = type;
-        searchByType();
-    }
-
 
     const searchByType = () => {
-        console.log(placeType.current);
         service = new googlemaps.places.PlacesService(map);
         let request = {
           location: map.getCenter(),
           radius: "500",
-          type: [placeType.current],
+          type: [category],
           openNow: openNow,
         };
 
@@ -61,13 +60,11 @@ const Map = props => {
     }
       
     const showPlace = (results, status) => {
-           
             if (status === googlemaps.places.PlacesServiceStatus.OK) {
                 addPlace(results);
             } else {
               alert("no results");
             }
-          
     }
 
     const findIsOpen =(periods, searchTime)=> {
@@ -169,16 +166,6 @@ const Map = props => {
 
     return(
         <div style={{ height: '100vh'}}>
-            {apiReady && googlemaps && (
-            <SearchBar 
-            map={map}
-            mapApi={googlemaps}
-            addPlace={addPlace}
-            onClickCategory = {onClickCategory}
-            detailInfo = {detailInfo}
-            setDetailInfo={setDetailInfo}
-            findIsOpen={findIsOpen}
-            />)}
             <div className = "googleMap">
                 {places.length !== 0 && <SearchDetailBar onClickIsOpen={onClickIsOpen} searchByType= {searchByType} searchByTime={searchByTime}/>}
                 <GoogleMap

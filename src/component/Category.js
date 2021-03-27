@@ -1,10 +1,7 @@
 import React from "react";
+import { NavLink } from 'react-router-dom';
 
-
-const Category = ({ map, mapApi, onClickCategory}) => {
-
-
-    const categories = [
+const categories = [
         { id: "cafe",name: "카페", icon: "fas fa-coffee"}, 
         { id: "restaurant",name: "음식점", icon: "fas fa-utensils"}, 
         { id: "bakery",name: "베이커리", icon: "fas fa-bread-slice"}, 
@@ -16,14 +13,12 @@ const Category = ({ map, mapApi, onClickCategory}) => {
     ]; 
 
 
-    const onClick = (e) => {
-        onClickCategory(e.target.className);
-    }
 
+const Category = () => {
     const categoryList = categories.map((category, i) => 
-    (<div key = {i} className="category"><button  className={category.id} onClick={onClick}>
+    (<div className="category"> <NavLink key = {category.id} className="category" to={`/${category.id}`}><button  className={category.id}>
         <i className={category.icon}></i>
-    </button>
+    </button></NavLink>
     <p>{category.name}</p></div>)
         )
     
