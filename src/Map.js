@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import './Map.css';
 import Marker from './component/Marker';
 import SearchDetailBar from './component/SearchDetailBar';
+import SearchBox from './component/SearchBox';
  
 dotenv.config();
 
@@ -27,9 +28,9 @@ const Map = ({ category }) => {
 
     const handleApiLoaded = (map, maps) => {
         if (map && maps) {
-            setApiReady(true);
             setMap(map);
             setGooglemaps(maps);
+            setApiReady(true);
         }  
     };
 
@@ -167,6 +168,9 @@ const Map = ({ category }) => {
     return(
         <div style={{ height: '100vh'}}>
             <div className = "googleMap">
+                {apiReady && <SearchBox map={map}
+                mapApi={googlemaps}
+                addPlace={addPlace}/>}
                 {places.length !== 0 && <SearchDetailBar onClickIsOpen={onClickIsOpen} searchByType= {searchByType} searchByTime={searchByTime}/>}
                 <GoogleMap
                 bootstrapURLKeys={{ 

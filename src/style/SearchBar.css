@@ -51,26 +51,6 @@ button {
   display: inline-block;
 }
 
-#pac-input {
-  background-color: #fff;
-  font-family: Roboto;
-  font-size: 15px;
-  font-weight: 300;
-  margin-left: 12px;
-  padding: 5px 11px 5px 13px;
-  margin: 20px;
-  margin-top: 10px;
-  text-overflow: ellipsis;
-  width: 240px;
-  border: 1px solid #aaaaaa;
-  border-radius: 30px;
-  pointer-events: none;
-}
-
-#pac-input:focus {
-  box-shadow: 1px 1px 8px 1px #dcdcdc;
-}
-
 @media screen and (max-width: 800px) {
   #searchBar {
     width: 30%;

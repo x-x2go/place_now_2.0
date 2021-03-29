@@ -1,61 +1,73 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, {  useEffect, useRef } from 'react';
+import styled from 'styled-components';
 
-class SearchBox extends React.Component {
-  static propTypes = {
-    placeholder: PropTypes.string,
-    onPlacesChanged: PropTypes.func
+const SearchWrap =styled.div`
+  width:300px;
+  height: 60px;
+  position: absolute;
+  z-index: 60;
+  float:left;
+  button{
+    width: 40px;
+    height: 40px;
+    border-radius: 30px;
+    background-color: salmon;
+    margin: 18px;
+    position: absolute;
   }
+`
 
-  constructor(props){
-    super(props);
-    this.clearSearchBox = this.clearSearchBox.bind(this);
-  }
+const Input = styled.input`
+  background-color: #fff;
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 300;
+  padding: 5px 11px 5px 13px;
+  margin: 20px;
+  text-overflow: ellipsis;
+  width: 240px;
+  border: 1px solid #aaaaaa;
+  border-radius: 30px;
+}
+`
 
-  render() {
-    return (
-            <input
-                id="pac-input"  
-                className="controls"
-                type="text"
-                placeholder="Search Box"
-                onFocus={this.clearSearchBox}
-                ref={(ref)=> this.input = ref}
-            />)
-  }
+const SearchBox = ({map, mapApi, addPlace}) => {
+  const searchInput = useRef();
 
-  onPlacesChanged = ({map, mapApi, addPlace}= this.props) => {
-    const selected = this.searchBox.getPlaces();
-    // let bounds = new mapApi.LatLngBounds();
-
-    // selected.forEach((place)=>{
-    //   if (!place.geometry) return;
-
-    //   if (place.geometry.viewport) {
-    //     bounds.union(place.geometry.viewport);
-    //   } else {
-    //     bounds.extend(place.geometry.location);
-    //   }
-      
-    // })
-   
-    // map.fitBounds(bounds);
+  const onPlacesChanged = () => {
+    const selected = searchInput.getPlaces();
     addPlace(selected);
   }
 
-  clearSearchBox() {
-    this.input.value = '';
+  const clearSearchBox = () => {
+    searchInput.current.value = '';
+    searchInput.current.focus();
   }
 
-  componentDidMount({ map, mapApi} = this.props ) {
-    this.searchBox = new mapApi.places.SearchBox(this.input);
-    this.searchBox.addListener('places_changed', this.onPlacesChanged);
-    this.searchBox.bindTo('bounds', map);
-  } 
+  useEffect(()=>{
+    const searchBox = new mapApi.places.SearchBox(searchInput.current);
+    if(searchBox){
+          searchBox.addListener('places_changed', onPlacesChanged);
+          searchBox.bindTo('bounds', map);
+        }
+    return () => {
+      mapApi.event.clearInstanceListeners(searchBox);
+    }
+  },[]);
 
-  componentWillUnmount({mapApi} = this.props) {
-    mapApi.event.clearInstanceListeners(this.input);
-  }
+
+  return (
+    <SearchWrap>
+      <button><i className="fas fa-search"></i></button>
+      <Input
+          id="pac-input"  
+          className="controls"
+          type="text"
+          placeholder="Search Box"
+          onFocus={clearSearchBox}
+          ref={searchInput}
+      />
+    </SearchWrap>)
 }
 
 export default SearchBox;
