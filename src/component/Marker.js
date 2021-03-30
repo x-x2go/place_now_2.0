@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import InfoWindow from './Infowindow';
@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   width: fit-content;
   height: fit-content;
   user-select: none;
-  transform: translate(-50%, -90%);
+  transform: translate(-50%, -90%); 
   cursor: ${(props) => (props.onClick ? 'pointer' : 'default')};
 
   &:hover{
@@ -61,8 +61,9 @@ Marker.defaultProps = {
 };
 
 Marker.propTypes = {
-  onClick: PropTypes.func,
-  text: PropTypes.string.isRequired,
+  text: PropTypes.string,
+  target: PropTypes.bool,
+  place: PropTypes.object
 };
 
 export default Marker;

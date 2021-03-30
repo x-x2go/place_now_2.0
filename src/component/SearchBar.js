@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import Category from "./Category";
 import "../style/SearchBar.css";
-import SearchBox from "./SearchBox";
 import DetailInfo from "./DetailInfo";
 
 
@@ -19,17 +18,10 @@ const SearchBar = ({map, mapApi, addPlace, onClickCategory, detailInfo, setDetai
 
                 { detailInfo ?
                 <DetailInfo info={detailInfo} setDetailInfo={setDetailInfo} findIsOpen={findIsOpen}/> : 
-                <>
-                {/*<SearchBox
-                map={map}
-                mapApi={mapApi}
-                addPlace={addPlace}
-                />*/}
                 <Category 
                 map={map}
                 mapApi={mapApi} 
                 onClickCategory={onClickCategory}/>
-                </>
                 }
 
               

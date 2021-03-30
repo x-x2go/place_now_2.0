@@ -1,19 +1,48 @@
-import React, {  useEffect, useRef } from 'react';
-import styled from 'styled-components';
+import React, {  useEffect, useRef, useState } from 'react';
+import styled, { keyframes, css } from 'styled-components';
 
 const SearchWrap =styled.div`
-  width:300px;
+  width:400px;
   height: 60px;
   position: absolute;
   z-index: 60;
   float:left;
   button{
-    width: 40px;
-    height: 40px;
     border-radius: 30px;
-    background-color: salmon;
     margin: 18px;
-    position: absolute;
+    position: relative;
+    ${props =>
+    props.appear ?
+    css`
+      width: 25px;
+      height: 25px;
+      top: 2px;
+      left: -70px;
+      background-color: #ffffff;
+    `:
+    css`
+      width: 40px;
+      height: 40px;
+      background-color: #efefef;
+    `
+  }
+  }
+`
+const boxOpen = keyframes`
+  from {
+    width: 20px;
+  }
+  to {
+    width: 240px;
+  }
+`;
+
+const boxClose = keyframes`
+  from {
+    width: 240px;
+  }
+  to {
+    width: 20px;
   }
 `
 
@@ -28,11 +57,20 @@ const Input = styled.input`
   width: 240px;
   border: 1px solid #aaaaaa;
   border-radius: 30px;
-}
+
+  animation-duration: 0.25s;
+  animation-timing-function: ease-out;
+  animation-name: ${props =>
+    props.appear ? boxOpen : boxClose };
+  animation-fill-mode: forwards;
+
 `
+
 
 const SearchBox = ({map, mapApi, addPlace}) => {
   const searchInput = useRef();
+  const [showSearchBox, setShowSearchBox] = useState(false);
+  const [animate, setAnimate] = useState(false);
 
   const onPlacesChanged = () => {
     const selected = searchInput.getPlaces();
@@ -42,6 +80,14 @@ const SearchBox = ({map, mapApi, addPlace}) => {
   const clearSearchBox = () => {
     searchInput.current.value = '';
     searchInput.current.focus();
+  }
+
+  const clickButton = () => {
+    setShowSearchBox(!showSearchBox);
+    if (showSearchBox) {
+      setAnimate(true);
+      setTimeout(() => setAnimate(false), 250);
+    }
   }
 
   useEffect(()=>{
@@ -56,17 +102,18 @@ const SearchBox = ({map, mapApi, addPlace}) => {
   },[]);
 
 
+
   return (
-    <SearchWrap>
-      <button><i className="fas fa-search"></i></button>
-      <Input
+    <SearchWrap appear={(showSearchBox || animate)}>
+      {(animate || showSearchBox) && <Input
           id="pac-input"  
-          className="controls"
+          appear = {showSearchBox}
           type="text"
           placeholder="Search Box"
           onFocus={clearSearchBox}
           ref={searchInput}
-      />
+      />}
+      <button onClick={clickButton}><i className={`fas fa-${(showSearchBox || animate) ? "chevron-left" : "search"}`}></i></button>
     </SearchWrap>)
 }
 
