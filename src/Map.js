@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import GoogleMap from 'google-map-react';
 import dotenv from "dotenv";
 import './Map.css';
@@ -12,14 +12,14 @@ const Map = ({ category }) => {
     const [apiReady, setApiReady] = useState(false);
     const [map, setMap] = useState(null);
     const [googlemaps, setGooglemaps] = useState(null);
-    const [places, setPlaces] = useState([]);
+    const [placess, setPlaces] = useState([]);
     const [target, setTarget] = useState(null);
+    const [service, setService] = useState(null);
     const [detailInfo, setDetailInfo] = useState(null);
     
     let openNow = false;
 
     let zoom = 10;
-    let service;
     const center = { lat: 37.5, lng: 127 };
 
     if(window.screen.width >= 768){
@@ -31,12 +31,22 @@ const Map = ({ category }) => {
             setMap(map);
             setGooglemaps(maps);
             setApiReady(true);
+            console.log(maps);
+            
         }  
     };
 
+    useEffect(()=>{
+        if(googlemaps){
+            const defineservice = new googlemaps.places.PlacesService(map);
+            setService(defineservice);
+            console.log("완료");
+            console.log(defineservice);
+        }
+    }, [googlemaps])
 
     useEffect(()=>{
-        if (map && googlemaps && category){
+        if (map && service && category){
             searchByType();
         }
     },[category]);
@@ -49,15 +59,17 @@ const Map = ({ category }) => {
 
 
     const searchByType = () => {
-        service = new googlemaps.places.PlacesService(map);
+        
         let request = {
           location: map.getCenter(),
           radius: "500",
           type: [category],
           openNow: openNow,
         };
-
+        
+        
         service.nearbySearch(request, showPlace);
+        
     }
       
     const showPlace = (results, status) => {
@@ -94,7 +106,7 @@ const Map = ({ category }) => {
     const searchByTime = (time) => {
         const searchTime = Number(time.replace(":", ""));
       
-        const openPlaces = places.filter((place) => {
+        const openPlaces = placess.filter((place) => {
           if (!place.opening_hours) return false;
           return findIsOpen(place.opening_hours.periods, searchTime);
         });
@@ -103,15 +115,15 @@ const Map = ({ category }) => {
       }
 
 
-    const addPlace = (places) => {
-        if(places){
+    const addPlace = (placess) => {
+        if(placess){
             // Promise만으로는 너무 Marker가 느리게 뜨기 때문에 우선적으로 Marker표시
-            setPlaces(places);
-            Promise.all(places.map( x=> getPlaceDetail(x))).then(value=>{
+            setPlaces(placess);
+            Promise.all(placess.map( x=> getPlaceDetail(x))).then(value=>{
                 setPlaces(value);
                 console.log(value);
             });
-            onPlacesChanged(places);
+            onPlacesChanged(placess);
         }
       };
 
@@ -149,10 +161,10 @@ const Map = ({ category }) => {
         setTarget(key);
       }
 
-    const onPlacesChanged = (places) => {
+    const onPlacesChanged = (placess) => {
         let bounds = new googlemaps.LatLngBounds();
 
-        places.forEach((place)=>{
+        placess.forEach((place)=>{
         if (!place.geometry) return;
 
         if (place.geometry.viewport) {
@@ -171,7 +183,7 @@ const Map = ({ category }) => {
                 {apiReady && <SearchBox map={map}
                 mapApi={googlemaps}
                 addPlace={addPlace}/>}
-                {places.length !== 0 && <SearchDetailBar onClickIsOpen={onClickIsOpen} searchByType= {searchByType} searchByTime={searchByTime}/>}
+                {placess.length !== 0 && <SearchDetailBar onClickIsOpen={onClickIsOpen} searchByType= {searchByType} searchByTime={searchByTime}/>}
                 <GoogleMap
                 bootstrapURLKeys={{ 
                     key: process.env.REACT_APP_GOOGLE_API_KEY,
@@ -186,7 +198,7 @@ const Map = ({ category }) => {
                 }}
                 onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
                 > 
-               {places.length !== 0 && (places.map((place) => {
+               {placess.length !== 0 && (placess.map((place) => {
                    return(
                    
              <Marker 
@@ -197,7 +209,7 @@ const Map = ({ category }) => {
                  lng={place.geometry.location.lng()}
                  target={place.place_id === target}
                  place={place}
-                 setDetailInfo={setDetailInfo}
+                 category={category}
              />
          )}
     ))

@@ -36,7 +36,7 @@ const Wrapper = styled.div`
 `;
 
 
-const Marker = ({ text, target, place, setDetailInfo}) => {
+const Marker = ({ text, target, place, category}) => {
   const placeTypes = ["cafe","restaurant","bakery","supermarket","shopping_mall","hospital","pharmacy","bank"];
   let iconType = placeTypes.includes(place.types[0]) ? place.types[0] : "default";
   let icon = target ? { name : "dot", width : "10px" } : { name : iconType , width : "40px" };
@@ -45,7 +45,7 @@ const Marker = ({ text, target, place, setDetailInfo}) => {
 
   return (
     <div>
-    {target && <InfoWindow place={place} setDetailInfo={setDetailInfo} />}
+    {target && <InfoWindow place={place} category={category} />}
     <Wrapper
       className="marker"
       name = {place.name}

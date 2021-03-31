@@ -1,11 +1,13 @@
 import React from "react";
+import { Route } from "react-router-dom";
 import Category from "./Category";
 import "../style/SearchBar.css";
 import DetailInfo from "./DetailInfo";
+import DetailInfoPage from "../pages/DetailInfoPage";
 
 
 
-const SearchBar = ({map, mapApi, addPlace, onClickCategory, detailInfo, setDetailInfo, findIsOpen}) => {
+const SearchBar = ({ location }) => {
 
         return ( 
             <div className="searchBar">
@@ -15,13 +17,10 @@ const SearchBar = ({map, mapApi, addPlace, onClickCategory, detailInfo, setDetai
                     alt="place-now logo"
                     />
                 </div>
-
-                { detailInfo ?
-                <DetailInfo info={detailInfo} setDetailInfo={setDetailInfo} findIsOpen={findIsOpen}/> : 
-                <Category 
-                map={map}
-                mapApi={mapApi} 
-                onClickCategory={onClickCategory}/>
+                <Route path={location} exact={true} component={ Category } />
+                <Route path={`${location}/place/:placeId`} component={ DetailInfoPage } />
+                { 
+                //<DetailInfo info={detailInfo} setDetailInfo={setDetailInfo} findIsOpen={findIsOpen}/> 
                 }
 
               

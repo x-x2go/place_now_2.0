@@ -4,10 +4,12 @@ import SearchBar from '../component/SearchBar';
 
 const MainPage = ({ match }) => {
     const category = match.params.category;
+    const location = match.path;
+
     return(
         <>
-            <SearchBar />
-            <Map category={category}/>
+            <SearchBar location={location}/>
+            <Map category={category} />
         </>
     )
 }

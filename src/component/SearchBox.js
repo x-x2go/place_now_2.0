@@ -72,8 +72,8 @@ const SearchBox = ({map, mapApi, addPlace}) => {
   const [showSearchBox, setShowSearchBox] = useState(false);
   const [animate, setAnimate] = useState(false);
 
-  const onPlacesChanged = () => {
-    const selected = searchInput.getPlaces();
+  const onPlacesChanged = (searchBox) => {
+    const selected = searchBox.getPlaces();
     addPlace(selected);
   }
 
@@ -91,15 +91,17 @@ const SearchBox = ({map, mapApi, addPlace}) => {
   }
 
   useEffect(()=>{
-    const searchBox = new mapApi.places.SearchBox(searchInput.current);
-    if(searchBox){
-          searchBox.addListener('places_changed', onPlacesChanged);
+    if(showSearchBox){
+          const searchBox = new mapApi.places.SearchBox(searchInput.current);
+          searchBox.addListener('places_changed', ()=>{ onPlacesChanged(searchBox) });
           searchBox.bindTo('bounds', map);
-        }
-    return () => {
-      mapApi.event.clearInstanceListeners(searchBox);
+        
+        return () => {
+          mapApi.event.clearInstanceListeners(searchBox);
+      }
     }
-  },[]);
+    
+  },[showSearchBox]);
 
 
 
