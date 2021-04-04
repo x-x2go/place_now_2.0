@@ -12,18 +12,22 @@ const Infowindow = ({ place, category }) => {
         rating
     } = place;
 
+    console.log(opening_hours);
+    const periods = opening_hours? opening_hours.periods : null;
+    const weekday_text = opening_hours? opening_hours.weekday_text : null;
+
     const url = category ? "/"+category : ""
-    
     return (
         <div className='infowindow_wrap'>
-            <div className='infowindow'>
+            <div className='infowindow'> 
                 <div id='infoTitle' className='info_title'>
                 <div className='place_name'>{ name }</div>
                     <Link to={{ pathname: `${url}/place/${place_id}`, state:{
                         name, 
                         formatted_address, 
                         formatted_phone_number, 
-                        opening_hours,
+                        periods,
+                        weekday_text,
                         rating
                     }}}><div className='more_detail'>&#62;</div>
                     </Link>

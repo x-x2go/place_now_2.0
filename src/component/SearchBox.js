@@ -11,6 +11,7 @@ const SearchWrap =styled.div`
     border-radius: 30px;
     margin: 18px;
     position: relative;
+    cursor: pointer;
     ${props =>
     props.appear ?
     css`
@@ -19,11 +20,15 @@ const SearchWrap =styled.div`
       top: 2px;
       left: -70px;
       background-color: #ffffff;
+      
     `:
     css`
       width: 40px;
       height: 40px;
       background-color: #efefef;
+      &:hover{
+        background-image: linear-gradient(to right, #f37c56, #ea6460);
+      }
     `
   }
   }

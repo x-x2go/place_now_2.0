@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import GoogleMap from 'google-map-react';
 import dotenv from "dotenv";
+import findIsOpen from "./module/findOpenPlace"
 import './Map.css';
 import Marker from './component/Marker';
 import SearchDetailBar from './component/SearchDetailBar';
@@ -79,29 +80,6 @@ const Map = ({ category }) => {
               alert("no results");
             }
     }
-
-    const findIsOpen =(periods, searchTime)=> {
-        const currentTime = new Date();
-        const dayOfWeek = currentTime.getDay();
-      
-        for (let i = 0; i < periods.length; i++) {
-          //예외: 24시간 영업 시
-          if (!periods[i].close) return true;
-          if (periods[i].open.day === dayOfWeek) {
-            let openTime = Number(periods[i].open.time);
-            let closeTime = Number(periods[i].close.time);
-      
-            if (openTime > closeTime) {
-              // 예외: 새벽까지 영업 시
-              if (openTime <= searchTime || searchTime <= closeTime) return true;
-            } else {
-              if (openTime <= searchTime && searchTime <= closeTime) return true;
-            }
-            return false;
-          }
-        }
-        return false;
-      }
 
     const searchByTime = (time) => {
         const searchTime = Number(time.replace(":", ""));

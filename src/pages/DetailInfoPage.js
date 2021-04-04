@@ -1,22 +1,27 @@
 import React from "react";
 import DetailInfo from "../component/DetailInfo";
 
-const DetailInfoPage = ({ match, location }) => {
-    console.log(match);
+const DetailInfoPage = ({ match, location}) => {
+    
     const {
         name, 
         formatted_address, 
         formatted_phone_number, 
-        opening_hours,
+        periods,
+        weekday_text,
         rating
     } = location.state;
     
+    const url = location.pathname.split("/place")[0];
     return(
         <DetailInfo name={name}
         formatted_address={formatted_address}
         formatted_phone_number= {formatted_phone_number}
-        opening_hours={opening_hours}
-        rating={rating}/>
+        periods={periods}
+        weekday_text={weekday_text}
+        rating={rating}
+        goback={url}
+        />
     )
 
 }
