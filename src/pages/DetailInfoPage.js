@@ -1,7 +1,7 @@
 import React from "react";
 import DetailInfo from "../component/DetailInfo";
 
-const DetailInfoPage = ({ match, location}) => {
+const DetailInfoPage = ({ location}) => {
     
     const {
         name, 

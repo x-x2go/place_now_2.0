@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import GoogleMap from 'google-map-react';
 import dotenv from "dotenv";
 import findIsOpen from "./module/findOpenPlace"
@@ -13,10 +13,9 @@ const Map = ({ category }) => {
     const [apiReady, setApiReady] = useState(false);
     const [map, setMap] = useState(null);
     const [googlemaps, setGooglemaps] = useState(null);
-    const [placess, setPlaces] = useState([]);
+    const [places, setPlaces] = useState([]);
     const [target, setTarget] = useState(null);
     const [service, setService] = useState(null);
-    const [detailInfo, setDetailInfo] = useState(null);
     
     let openNow = false;
 
@@ -27,13 +26,13 @@ const Map = ({ category }) => {
         zoom = 15;
     }
 
+    const timer = ms => new Promise(res=>setTimeout(res, ms));
+
     const handleApiLoaded = (map, maps) => {
         if (map && maps) {
             setMap(map);
             setGooglemaps(maps);
             setApiReady(true);
-            console.log(maps);
-            
         }  
     };
 
@@ -41,8 +40,6 @@ const Map = ({ category }) => {
         if(googlemaps){
             const defineservice = new googlemaps.places.PlacesService(map);
             setService(defineservice);
-            console.log("완료");
-            console.log(defineservice);
         }
     }, [googlemaps])
 
@@ -84,7 +81,7 @@ const Map = ({ category }) => {
     const searchByTime = (time) => {
         const searchTime = Number(time.replace(":", ""));
       
-        const openPlaces = placess.filter((place) => {
+        const openPlaces = places.filter((place) => {
           if (!place.opening_hours) return false;
           return findIsOpen(place.opening_hours.periods, searchTime);
         });
@@ -93,45 +90,61 @@ const Map = ({ category }) => {
       }
 
 
-    const addPlace = (placess) => {
-        if(placess){
+    const addPlace = async (places) => {
+        if(places){
             // Promise만으로는 너무 Marker가 느리게 뜨기 때문에 우선적으로 Marker표시
-            setPlaces(placess);
-            Promise.all(placess.map( x=> getPlaceDetail(x))).then(value=>{
-                setPlaces(value);
-                console.log(value);
-            });
-            onPlacesChanged(placess);
+            setPlaces(places);
+
+            const detailinfo = await requestInfo(places);
+            setPlaces(detailinfo);
+            fitBoundsOnMap(places);
         }
       };
 
-      const getPlaceDetail =  (temp_place) => {
-                const request = {
-                placeId: temp_place.place_id,
-                fields: [
-                    "place_id",
-                    "name",
-                    "formatted_address", 
-                    "formatted_phone_number",
-                    "geometry",
-                    "opening_hours",
-                    "rating",
-                    "type",
-                    "icon",
-                ],
-                };
+      const requestInfo = async (places) => {
+          let requestPlaces = places.slice();
+          let finPlaceInfo =[];
 
-                return new Promise( (resolve, reject) => {
-                   service.getDetails(request, function(place, status) {
-                        if (status === googlemaps.places.PlacesServiceStatus.OK) {
-                            resolve(place);
-                        }else{
-                            window.setTimeout( ()=>{resolve(getPlaceDetail(temp_place))}, 2000);
-                            console.log(status);
-                        }
-                    });
-                })
+          const getPlaceDetail = (temp_places) => {
+            
+            temp_places.forEach(temp_place=>{
+                const request = {
+                  placeId: temp_place.place_id,
+                  fields: [
+                      "place_id",
+                      "name",
+                      "formatted_address", 
+                      "formatted_phone_number",
+                      "geometry",
+                      "opening_hours",
+                      "rating",
+                      "type",
+                      "icon",
+                  ],
+                  };
+  
+                  service.getDetails(request, (place, status)=>{
+                      if (status === googlemaps.places.PlacesServiceStatus.OK) {
+                          const info = place;
+                          finPlaceInfo.push(info);
+                       }else{
+                          requestPlaces.push(temp_place);
+                          console.log(status);
+                       }
+                  })
+  
+            })
+           
+        }
+
+          while(requestPlaces.length > 0){
+              let group = requestPlaces.splice(0, 10);
+              getPlaceDetail(group);
+              await timer(1500);
+          }
+          return finPlaceInfo;
       }
+
 
       const markerClicked = (key) => {
            // infowindow 닫기
@@ -139,10 +152,10 @@ const Map = ({ category }) => {
         setTarget(key);
       }
 
-    const onPlacesChanged = (placess) => {
+    const fitBoundsOnMap = (places) => {
         let bounds = new googlemaps.LatLngBounds();
 
-        placess.forEach((place)=>{
+        places.forEach((place)=>{
         if (!place.geometry) return;
 
         if (place.geometry.viewport) {
@@ -161,7 +174,7 @@ const Map = ({ category }) => {
                 {apiReady && <SearchBox map={map}
                 mapApi={googlemaps}
                 addPlace={addPlace}/>}
-                {placess.length !== 0 && <SearchDetailBar onClickIsOpen={onClickIsOpen} searchByType= {searchByType} searchByTime={searchByTime}/>}
+                {places.length !== 0 && <SearchDetailBar onClickIsOpen={onClickIsOpen} searchByType= {searchByType} searchByTime={searchByTime}/>}
                 <GoogleMap
                 bootstrapURLKeys={{ 
                     key: process.env.REACT_APP_GOOGLE_API_KEY,
@@ -176,7 +189,7 @@ const Map = ({ category }) => {
                 }}
                 onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
                 > 
-               {placess.length !== 0 && (placess.map((place) => {
+               {places.length !== 0 && (places.map((place) => {
                    return(
                    
              <Marker 
