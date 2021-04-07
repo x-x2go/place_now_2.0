@@ -16,6 +16,7 @@ const Map = ({ category }) => {
     const [places, setPlaces] = useState([]);
     const [target, setTarget] = useState(null);
     const [service, setService] = useState(null);
+    const [getData, setGetData] = useState(false);
     
     let openNow = false;
 
@@ -93,11 +94,12 @@ const Map = ({ category }) => {
     const addPlace = async (places) => {
         if(places){
             // Promise만으로는 너무 Marker가 느리게 뜨기 때문에 우선적으로 Marker표시
+            setGetData(false);
             setPlaces(places);
-
+            fitBoundsOnMap(places);
             const detailinfo = await requestInfo(places);
             setPlaces(detailinfo);
-            fitBoundsOnMap(places);
+            setGetData(true);
         }
       };
 
@@ -107,7 +109,7 @@ const Map = ({ category }) => {
 
           const getPlaceDetail = (temp_places) => {
             
-            temp_places.forEach(temp_place=>{
+            temp_places.forEach((temp_place)=>{
                 const request = {
                   placeId: temp_place.place_id,
                   fields: [
@@ -128,8 +130,9 @@ const Map = ({ category }) => {
                           const info = place;
                           finPlaceInfo.push(info);
                        }else{
-                          requestPlaces.push(temp_place);
+                           requestPlaces.push(temp_place);
                           console.log(status);
+                          return;
                        }
                   })
   
@@ -139,6 +142,7 @@ const Map = ({ category }) => {
 
           while(requestPlaces.length > 0){
               let group = requestPlaces.splice(0, 10);
+              console.log(group);
               getPlaceDetail(group);
               await timer(1500);
           }
@@ -148,7 +152,6 @@ const Map = ({ category }) => {
 
       const markerClicked = (key) => {
            // infowindow 닫기
-           console.log("clicked "+key);
         setTarget(key);
       }
 
@@ -171,7 +174,8 @@ const Map = ({ category }) => {
     return(
         <div style={{ height: '100vh'}}>
             <div className = "googleMap">
-                {apiReady && <SearchBox map={map}
+                {apiReady && <SearchBox 
+                map={map}
                 mapApi={googlemaps}
                 addPlace={addPlace}/>}
                 {places.length !== 0 && <SearchDetailBar onClickIsOpen={onClickIsOpen} searchByType= {searchByType} searchByTime={searchByTime}/>}
@@ -185,7 +189,9 @@ const Map = ({ category }) => {
                 yesIWantToUseGoogleMapApiInternals
                 onChildClick={markerClicked}
                 onClick={() =>{
-                    setTarget(null);
+                    if(getData){
+                        setTarget(null);
+                    }
                 }}
                 onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
                 > 
@@ -201,6 +207,7 @@ const Map = ({ category }) => {
                  target={place.place_id === target}
                  place={place}
                  category={category}
+                 getData={getData}
              />
          )}
     ))

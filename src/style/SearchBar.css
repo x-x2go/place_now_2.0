@@ -37,6 +37,11 @@ button {
   color: #fff;
 }
 
+.active button {
+  background-color: #aaaaaa;
+  color: #fff;
+}
+
 .searchBar button i {
   pointer-events: none;
 }

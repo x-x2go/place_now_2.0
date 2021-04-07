@@ -11,7 +11,7 @@ const DetailInfoPage = ({ location}) => {
         weekday_text,
         rating
     } = location.state;
-    
+    console.log("두번?");
     const url = location.pathname.split("/place")[0];
     return(
         <DetailInfo name={name}

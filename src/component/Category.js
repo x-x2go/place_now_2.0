@@ -14,9 +14,9 @@ const categories = [
 
 
 
-const Category = () => {
+const Category = ({ onSelect }) => {
     const categoryList = categories.map((category, i) => 
-    (<div className="category"> <NavLink key = {category.id} className="category" to={`/${category.id}`}><button  className={category.id}>
+    (<div className="category"> <NavLink key = {category.id} activeClassName='active' className="category" to={`/${category.id}`}><button  className={category.id}>
         <i className={category.icon}></i>
     </button></NavLink>
     <p>{category.name}</p></div>)

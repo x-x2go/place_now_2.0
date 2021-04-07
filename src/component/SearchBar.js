@@ -11,17 +11,14 @@ const SearchBar = ({ location }) => {
 
         return ( 
             <div className="searchBar">
-                <Link to="/"><div id="mainLogo">
+                <Link to="/" onClick={() => window.location.reload()}><div id="mainLogo">
                     <img
                     src="https://place-now.s3.ap-northeast-2.amazonaws.com/logo/place_now_logo.png"
                     alt="place-now logo"
                     />
                 </div></Link>
-                <Route path={location} exact={true} component={ Category } />
+                <Route path={location} exact component={ Category } />
                 <Route path={`${location}/place/:placeId`} component={ DetailInfoPage } />
-                { 
-                //<DetailInfo info={detailInfo} setDetailInfo={setDetailInfo} findIsOpen={findIsOpen}/> 
-                }
 
               
         </div>

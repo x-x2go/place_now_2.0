@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import InfoWindow from './Infowindow';
@@ -36,16 +36,14 @@ const Wrapper = styled.div`
 `;
 
 
-const Marker = ({ text, target, place, category}) => {
+const Marker = ({ text, target, place, category, getData}) => {
   const placeTypes = ["cafe","restaurant","bakery","supermarket","shopping_mall","hospital","pharmacy","bank"];
   let iconType = placeTypes.includes(place.types[0]) ? place.types[0] : "default";
   let icon = target ? { name : "dot", width : "10px" } : { name : iconType , width : "40px" };
 
-
-
   return (
     <div>
-    {target && <InfoWindow place={place} category={category} />}
+    {target && <InfoWindow place={place} category={category} getData={getData} />}
     <Wrapper
       className="marker"
       name = {place.name}
