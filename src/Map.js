@@ -90,7 +90,6 @@ const Map = ({ category }) => {
         setPlaces(openPlaces);
       }
 
-
     const addPlace = async (places) => {
         if(places){
             // Promise만으로는 너무 Marker가 느리게 뜨기 때문에 우선적으로 Marker표시

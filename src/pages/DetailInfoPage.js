@@ -1,7 +1,8 @@
 import React from "react";
 import DetailInfo from "../component/DetailInfo";
 
-const DetailInfoPage = ({ location}) => {
+const DetailInfoPage = ({ match, location }) => {
+    const id = match.params.place_id;
     
     const {
         name, 
@@ -11,10 +12,12 @@ const DetailInfoPage = ({ location}) => {
         weekday_text,
         rating
     } = location.state;
-    console.log("두번?");
+
     const url = location.pathname.split("/place")[0];
     return(
-        <DetailInfo name={name}
+        <DetailInfo
+        key= {id}
+        name={name}
         formatted_address={formatted_address}
         formatted_phone_number= {formatted_phone_number}
         periods={periods}

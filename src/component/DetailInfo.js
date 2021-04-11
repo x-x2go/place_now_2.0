@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import findIsOpen from "../module/findOpenPlace"
 import '../style/DetailInfo.css';
 
-const DetailInfo = ({ place_id, 
+const DetailInfo = ({ 
   name, 
   formatted_address, 
   formatted_phone_number, 
@@ -40,7 +40,7 @@ const DetailInfo = ({ place_id,
       ))? {className: 'openBtn on', text: '영업중'} : {className: 'openBtn', text: '영업종료'};
     
     return (
-    <div className='infoBlock' showInfo={showInfo}>
+    <div className='infoBlock'>
         <div className='closeBtn' onClick={closeInfo}><i className="fas fa-chevron-down"></i></div>
         <div className='place_title'><h1>{name}</h1></div>
         <div className='info_row'>
