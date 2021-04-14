@@ -1,7 +1,8 @@
 import React, {useState} from "react";
 import { useHistory } from "react-router-dom";
-import findIsOpen from "../module/findOpenPlace"
+import findIsOpen from '../module/findOpenPlace';
 import '../style/DetailInfo.css';
+
 
 const DetailInfo = ({ 
   name, 
@@ -27,6 +28,7 @@ const DetailInfo = ({
         (currentTime.getHours() < 10 ? "0" : "") + currentTime.getHours();
       return currentHours +""+ currentMin;
     }
+
     
     const closeInfo = () => {
       setShowInfo(1);

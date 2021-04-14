@@ -9,6 +9,9 @@ import SearchBox from './component/SearchBox';
  
 dotenv.config();
 
+let originPlaceInfo = [];
+
+
 const Map = ({ category }) => {
     const [apiReady, setApiReady] = useState(false);
     const [map, setMap] = useState(null);
@@ -19,6 +22,7 @@ const Map = ({ category }) => {
     const [getData, setGetData] = useState(false);
     
     let openNow = false;
+    
 
     let zoom = 10;
     const center = { lat: 37.5, lng: 127 };
@@ -82,12 +86,16 @@ const Map = ({ category }) => {
     const searchByTime = (time) => {
         const searchTime = Number(time.replace(":", ""));
       
-        const openPlaces = places.filter((place) => {
+        const openPlaces = originPlaceInfo.filter((place) => {
           if (!place.opening_hours) return false;
           return findIsOpen(place.opening_hours.periods, searchTime);
         });
       
-        setPlaces(openPlaces);
+        if(openPlaces.length === 0){
+            alert("검색된 결과가 없습니다. ");
+        }else{
+            setPlaces(openPlaces);
+        }
       }
 
     const addPlace = async (places) => {
@@ -97,6 +105,7 @@ const Map = ({ category }) => {
             setPlaces(places);
             fitBoundsOnMap(places);
             const detailinfo = await requestInfo(places);
+            console.log(originPlaceInfo);
             setPlaces(detailinfo);
             setGetData(true);
         }
@@ -141,10 +150,11 @@ const Map = ({ category }) => {
 
           while(requestPlaces.length > 0){
               let group = requestPlaces.splice(0, 10);
-              console.log(group);
               getPlaceDetail(group);
               await timer(1500);
           }
+          originPlaceInfo = finPlaceInfo;
+          console.log(finPlaceInfo);
           return finPlaceInfo;
       }
 
